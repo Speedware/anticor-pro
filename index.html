@@ -16,20 +16,25 @@
         <img class="logo-desktop" src="assets/logo-bar-white.png" alt="Антикор PRO" style="height:32px;width:auto;">
         <img class="logo-mobile" src="assets/logo-white.png" alt="Антикор PRO" style="height:34px;width:auto;">
       </div>
-      <nav class="nav-links" style="color:rgba(255,255,255,0.78);font-weight:600;font-size:15px;">
-        <a href="#services" style="color:inherit;">Услуги</a>
-        <a href="#process" style="color:inherit;">Процесс</a>
-        <a href="#pricing" style="color:inherit;">Цены</a>
-        <a href="#reviews" style="color:inherit;">Отзывы</a>
-      </nav>
-      <div class="nav-cta" style="align-items:center;gap:20px;">
-        <a href="tel:+79219296642" style="color:#fff;font-weight:700;font-size:15px;display:none;">+7 (921) 929-66-42</a>
-        <a href="#contact" class="btn btn-primary" style="height:48px;padding:0 24px;font-size:14px;">Записаться</a>
-      </div>
+      <details class="nav-menu">
+        <summary class="nav-burger" aria-label="Меню">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <line class="burger-line burger-line-1" x1="3" y1="7" x2="21" y2="7" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+            <line class="burger-line burger-line-2" x1="3" y1="12" x2="21" y2="12" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+            <line class="burger-line burger-line-3" x1="3" y1="17" x2="21" y2="17" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </summary>
+        <div class="nav-menu-panel">
+          <a href="#services">Услуги</a>
+          <a href="#process">Процесс</a>
+          <a href="#pricing">Цены</a>
+          <a href="#reviews">Отзывы</a>
+        </div>
+      </details>
     </div>
   </header>
 
-  <section style="background:#17171A;position:relative;overflow:hidden;padding:88px 0 96px;">
+  <section class="hero" style="background:#17171A;position:relative;overflow:hidden;padding:88px 0 96px;">
     <div class="hero-graphic" style="position:absolute;right:-4%;top:50%;transform:translateY(-50%);width:64%;max-width:820px;pointer-events:none;">
       <div style="position:relative;">
         <svg viewBox="0 0 600 600" style="position:absolute;inset:0;width:100%;height:100%;">
@@ -407,5 +412,54 @@
   </footer>
 
 </div>
+<script>
+document.querySelectorAll('.faq-item').forEach(function(item){
+  var summary = item.querySelector('summary');
+  var body = item.querySelector('.faq-body');
+  summary.addEventListener('click', function(e){
+    e.preventDefault();
+    if (item.classList.contains('is-open')) {
+      body.style.maxHeight = body.scrollHeight + 'px';
+      requestAnimationFrame(function(){
+        item.classList.remove('is-open');
+        body.style.maxHeight = '0px';
+      });
+      window.setTimeout(function(){ item.removeAttribute('open'); }, 420);
+    } else {
+      item.setAttribute('open', '');
+      requestAnimationFrame(function(){
+        requestAnimationFrame(function(){
+          item.classList.add('is-open');
+          body.style.maxHeight = body.scrollHeight + 'px';
+        });
+      });
+    }
+  });
+});
+
+document.querySelectorAll('.nav-menu').forEach(function(menu){
+  var summary = menu.querySelector('summary');
+  function openMenu(){
+    menu.setAttribute('open', '');
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){ menu.classList.add('is-open'); });
+    });
+  }
+  function closeMenu(){
+    menu.classList.remove('is-open');
+    window.setTimeout(function(){ menu.removeAttribute('open'); }, 300);
+  }
+  summary.addEventListener('click', function(e){
+    e.preventDefault();
+    if (menu.classList.contains('is-open')) { closeMenu(); } else { openMenu(); }
+  });
+  document.addEventListener('click', function(e){
+    if (menu.classList.contains('is-open') && !menu.contains(e.target)) { closeMenu(); }
+  });
+  menu.querySelectorAll('.nav-menu-panel a').forEach(function(link){
+    link.addEventListener('click', closeMenu);
+  });
+});
+</script>
 </body>
 </html>
