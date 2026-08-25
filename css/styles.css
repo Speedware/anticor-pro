@@ -27,6 +27,7 @@ a:hover{color:#17171A;}
 .hero-copy{flex:1 1 460px;min-width:320px;}
 .logo-desktop{display:block;}
 .logo-mobile{display:none;}
+.hero-stats-mobile{display:none;}
 @media (max-width:860px){
   .nav-links{display:none;}
   .contact-grid{flex-direction:column;}
@@ -34,6 +35,8 @@ a:hover{color:#17171A;}
   .hero-graphic{display:none;}
   .logo-desktop{display:none;}
   .logo-mobile{display:block;}
+  .hero-stats-mobile{display:grid;grid-template-columns:repeat(3,1fr);}
+  .stats-section{display:none;}
 }
 table.price{width:100%;border-collapse:collapse;min-width:760px;}
 table.price th,table.price td{padding:18px 20px;text-align:left;border-bottom:1px solid #ECEAE3;}
