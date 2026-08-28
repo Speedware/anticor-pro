@@ -21,10 +21,8 @@ a:hover{color:#17171A;}
 .rise{animation:riseIn 0.8s cubic-bezier(.2,.7,.2,1) both;}
 .rise-1{animation-delay:.05s;} .rise-2{animation-delay:.18s;} .rise-3{animation-delay:.30s;} .rise-4{animation-delay:.42s;}
 .nav-menu{position:relative;}
-.nav-menu summary{list-style:none;cursor:pointer;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:10px;transition:background 0.2s ease;}
-.nav-menu summary::-webkit-details-marker{display:none;}
-.nav-menu summary::marker{content:"";}
-.nav-menu summary:hover{background:rgba(255,255,255,0.08);}
+.nav-burger{background:none;border:none;padding:0;cursor:pointer;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:10px;transition:background 0.2s ease;}
+.nav-burger:hover{background:rgba(255,255,255,0.08);}
 .burger-line{transition:transform 0.3s ease,opacity 0.2s ease;transform-origin:center;}
 .nav-menu.is-open .burger-line-1{transform:translateY(5px) rotate(45deg);}
 .nav-menu.is-open .burger-line-2{opacity:0;}
@@ -54,11 +52,8 @@ table.price th{font-family:'Unbounded',sans-serif;font-size:13px;text-transform:
 table.price td.cls{font-weight:700;}
 table.price tr:last-child td{border-bottom:none;}
 .faq-item{border-bottom:1px solid #ECEAE3;padding:28px 0;}
-.faq-item summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;font-size:17px;font-weight:700;font-family:'Manrope',sans-serif;}
-.faq-item summary::-webkit-details-marker{display:none;}
-.faq-item summary::marker{content:"";}
-.faq-item summary{transition:color 0.2s ease;}
-.faq-item summary:hover{color:var(--accent);}
+.faq-summary{width:100%;background:none;border:none;padding:0;text-align:left;color:#17171A;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;font-size:17px;font-weight:700;font-family:'Manrope',sans-serif;transition:color 0.2s ease;}
+.faq-summary:hover{color:var(--accent);}
 .faq-item .faq-chevron{flex-shrink:0;transition:transform 0.45s cubic-bezier(0.65,0,0.35,1);color:#8A887F;}
 .faq-item.is-open .faq-chevron{transform:rotate(180deg);}
 .faq-item .faq-body{overflow:hidden;max-height:0;transition:max-height 0.4s cubic-bezier(0.65,0,0.35,1);}
