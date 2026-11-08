@@ -389,14 +389,21 @@
         </div>
       </div>
       <div style="flex:1 1 380px;min-width:300px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);border-radius:22px;padding:36px;">
-        <div style="display:flex;flex-direction:column;gap:16px;">
-          <input placeholder="Ваше имя">
-          <input placeholder="Телефон">
-          <input placeholder="Марка и модель авто">
-          <textarea placeholder="Комментарий (необязательно)"></textarea>
-          <button class="btn btn-primary" style="width:100%;margin-top:6px;border:none;">Отправить заявку</button>
-          <p style="color:rgba(255,255,255,0.4);font-size:12.5px;line-height:1.5;text-align:center;">Нажимая на кнопку, вы соглашаетесь с политикой обработки персональных данных</p>
-        </div>
+        <form id="lead-form" novalidate>
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <input name="name" placeholder="Ваше имя" required maxlength="100">
+            <input name="phone" type="tel" placeholder="Телефон" required maxlength="30">
+            <input name="car" placeholder="Марка и модель авто" required maxlength="150">
+            <textarea name="comment" placeholder="Комментарий (необязательно)" maxlength="1000"></textarea>
+            <input type="text" name="website" autocomplete="off" tabindex="-1" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" aria-hidden="true">
+            <button type="submit" class="btn btn-primary" style="width:100%;margin-top:6px;border:none;">Отправить заявку</button>
+            <p id="lead-form-status" role="status" style="color:rgba(255,255,255,0.6);font-size:13px;text-align:center;min-height:16px;"></p>
+            <label style="display:flex;gap:10px;align-items:flex-start;color:rgba(255,255,255,0.4);font-size:12.5px;line-height:1.5;">
+              <input type="checkbox" name="consent" required style="width:16px;height:16px;flex-shrink:0;margin-top:2px;border-radius:4px;border:1px solid rgba(255,255,255,0.35);background:transparent;accent-color:var(--accent);">
+              <span>Нажимая на кнопку, вы соглашаетесь с <a href="privacy.html" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.7);text-decoration:underline;">политикой обработки персональных данных</a></span>
+            </label>
+          </div>
+        </form>
       </div>
     </div>
   </section>
@@ -416,6 +423,10 @@
           <a href="tel:+79990357878" style="color:rgba(255,255,255,0.7);font-size:14.5px;">+7 (999) 035-78-78</a>
           <a href="https://t.me/ANTICORSENTERSPB" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.7);font-size:14.5px;">Telegram @ANTICORSENTERSPB</a>
           <span style="color:rgba(255,255,255,0.7);font-size:14.5px;">Школьная ул., 89, Санкт-Петербург</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <span style="color:#8A887F;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;">Документы</span>
+          <a href="privacy.html" style="color:rgba(255,255,255,0.7);font-size:14.5px;">Политика обработки персональных данных</a>
         </div>
       </div>
     </div>
@@ -454,6 +465,52 @@ document.querySelectorAll('.nav-menu').forEach(function(menu){
     link.addEventListener('click', function(){ menu.classList.remove('is-open'); });
   });
 });
+
+// TODO: укажите реальный адрес бэкенда бота после деплоя (см. bot/README.md)
+var LEAD_API_URL = 'https://bot.anticor.pro/api/requests';
+
+var leadForm = document.getElementById('lead-form');
+if (leadForm) {
+  var leadStatus = document.getElementById('lead-form-status');
+  var leadButton = leadForm.querySelector('button[type="submit"]');
+
+  leadForm.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    var formData = new FormData(leadForm);
+    var payload = {
+      name: formData.get('name'),
+      phone: formData.get('phone'),
+      car: formData.get('car'),
+      comment: formData.get('comment'),
+      website: formData.get('website')
+    };
+
+    leadButton.disabled = true;
+    leadStatus.style.color = 'rgba(255,255,255,0.6)';
+    leadStatus.textContent = 'Отправляем заявку…';
+
+    fetch(LEAD_API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+      .then(function(res){ if (!res.ok) throw new Error('bad status'); return res.json(); })
+      .then(function(data){
+        if (!data.ok) throw new Error('bad response');
+        leadStatus.style.color = '#FF5A1F';
+        leadStatus.textContent = 'Заявка отправлена! Мы скоро свяжемся с вами.';
+        leadForm.reset();
+      })
+      .catch(function(){
+        leadStatus.style.color = '#FF5A1F';
+        leadStatus.textContent = 'Не удалось отправить заявку. Позвоните нам по телефону.';
+      })
+      .finally(function(){
+        leadButton.disabled = false;
+      });
+  });
+}
 </script>
 </body>
 </html>
